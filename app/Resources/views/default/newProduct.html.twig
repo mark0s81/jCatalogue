@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% set section = 'product/create' %}
+
+{% block stylesheets %}
+    .checkbox{
+        display: inline-block !important;
+        margin-right: 25px;
+    }
+{% endblock %}
+
+{% block body %}
+    {% for flash_message in app.session.flashBag.get('notice') %}
+        <div class="alert alert-success" role="alert">
+            <strong>Well done!</strong> {{ flash_message }}.
+        </div>
+    {% endfor %}
+    <div class="well">
+        Create a product following these instruction:
+        <ol>
+            <li>fill in the name field</li>
+            <li>upload an image with a png or jpg extension</li>
+            <li>fill in the description field</li>
+            <li>select at least one tag</li>
+        </ol>
+    </div>
+    {{ form_start(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.image) }}
+    {{ form_row(form.description) }}
+    {{ form_row(form.tag) }}
+    <div class="form-group">
+        {{ form_widget(form.save, { 'attr': {'class': 'btn-success'} }) }}
+        <a href="/tag/create?back=product_create" class="btn btn-info">New Tag</a>
+    </div>
+    {{ form_end(form) }}
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function() {
+            $('.js-datepicker').datepicker({
+                dateFormat: 'yy-mm-dd'
+            });
+        });
+    </script>
+{% endblock %}

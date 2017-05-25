@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% set section = 'tag/create' %}
+
+{% block body %}
+    {% for flash_message in app.session.flashBag.get('notice') %}
+        <div class="alert alert-danger" role="alert">
+            <strong>Pay attention!</strong> {{ flash_message }}.
+        </div>
+    {% endfor %}
+    <div class="well">
+        Create a tag following these instruction:
+        <ol>
+            <li>fill in the name field</li>
+        </ol>
+    </div>
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+{% endblock %}

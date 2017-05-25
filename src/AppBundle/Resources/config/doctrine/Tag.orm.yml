@@ -1,0 +1,20 @@
+# src/AppBundle/Resources/config/doctrine/Tag.orm.yml
+AppBundle\Entity\Tag:
+    type: entity
+    table: jC_Tags
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: string
+            length: 100
+            unique: true
+    oneToMany:
+        tgPrd:
+            targetEntity: ProductTag
+            mappedBy: tag
+            cascade: ["all"]

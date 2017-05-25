@@ -1,0 +1,26 @@
+# src/AppBundle/Resources/config/doctrine/Product.orm.yml
+AppBundle\Entity\Product:
+    type: entity
+    table: jC_Products
+    id:
+        id:
+            type: integer
+            column: id
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: string
+            length: 100
+        image:
+            type: string
+            scale: 100
+        description:
+            type: text
+        date:
+            type: integer
+    oneToMany:
+        prdTg:
+            targetEntity: ProductTag
+            mappedBy: product
+            cascade: ["all"]

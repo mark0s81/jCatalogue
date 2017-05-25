@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+{% set section = 'Product List' %}
+
+{% block stylesheets %}
+    #data_table tr{
+        cursor: pointer;
+    }
+    #data_table tbody td {
+        vertical-align: middle;
+    }
+    .preview{
+        max-height: 100px;
+        width: auto;
+    }
+{% endblock %}
+
+{% block body %}
+    {% for flash_message in app.session.flashBag.get('notice') %}
+        <div class="alert alert-success" role="alert">
+            <strong>Well done!</strong> {{ flash_message }}.
+        </div>
+    {% endfor %}
+
+    <div class="well">
+        <p>This page shows all products stored in the database: the result is ordered by the date in descending mode.</p>
+        <p>You can refine your search with the Tags column by using the search field below the table.</p>
+    </div>
+    <table id="data_table" class="table table-striped table-hover table-condensed table-responsive">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Image</th>
+                <th>Tags</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Name</th>
+                <th>Image</th>
+                <th>Tags</th>
+                <th>Date</th>
+            </tr>
+        </tfoot>
+
+        <tbody>
+            {% for product in products %}
+                <tr onClick="document.forms['viewForm{{ product.id }}'].submit();">
+                    <td>{{ product.name }}</td>
+                    <td><img src="{{ asset('uploads/images/'~ product.image ) }}" class="preview" /></td>
+                    <td>{{ tags[product.id] }}</td>
+                    <td>{{ product.date | date("Y/m/d - H:i:s") }} <form class="viewForm" action="/product/{{ product.id }}/edit" method="get" name="viewForm" id="viewForm{{ product.id }}"></form></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function(){
+            $(document).ready(function() {
+
+                // Setup - add a text input to each footer cell
+                $('#data_table tfoot th:nth-child(3)').each( function () {
+                    var title = $(this).text();
+                    $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+                } );
+
+                // Apply the order on Date column
+                var table = $('#data_table').DataTable( {
+                    "order": [[ 3, "desc" ]]
+                });
+
+                // Apply the search
+                table.columns(2).every( function () {
+                    var that = this;
+
+                    $( 'input', this.footer() ).on( 'keyup change', function () {
+                        if ( that.search() !== this.value ) {
+                            that
+                                .search( this.value )
+                                .draw();
+                        }
+                    } );
+                } );
+            });
+        });
+    </script>
+{% endblock %}

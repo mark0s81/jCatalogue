@@ -1,0 +1,30 @@
+# src/AppBundle/Resources/config/doctrine/ProductTag.orm.yml
+AppBundle\Entity\ProductTag:
+    type: entity
+    table: jC_ProductsTags
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    manyToOne:
+        product:
+            targetEntity: Product
+            inversedBy: prdTg
+            joinColumns:
+                product_id:
+                    referencedColumnName: id
+                    nullable: true
+                    onDelete: cascade
+        tag:
+            targetEntity: Tag
+            inversedBy: tgPrd
+            joinColumns:
+                tag_id:
+                    nullable: false
+                    referencedColumnName: id
+                    onDelete: cascade
+    uniqueConstraints:
+        product_tag:
+            columns: [ product_id, tag_id ]

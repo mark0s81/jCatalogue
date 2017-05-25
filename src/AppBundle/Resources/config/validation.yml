@@ -1,0 +1,7 @@
+AppBundle\Entity\Product:
+    properties:
+        image:
+            - Image:
+                mimeTypes: [image/jpeg, image/png]
+    constraints:
+        - Callback: validate
